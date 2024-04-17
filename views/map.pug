@@ -1,0 +1,134 @@
+doctype html
+html(lang="bg")
+  head
+    meta(charset="UTF-8")
+    meta(name="description", content="Правилното място за собствениците на домашни любимци. Обсъждане на теми, споделяне на опит и интересни факти.")
+    meta(name="keywords", content="домашни любимци, куче, котка, хранене, опит, интересни факти, форум, карта")
+    meta(name="author", content="Симона Матеева")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Локации
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN", crossorigin="anonymous")
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css", rel="stylesheet")
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css", rel="stylesheet")
+    link(href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.3/awesomplete.min.css", rel="stylesheet", integrity="sha512-NI/wJ5l5WqTyr9YubwCC8Mdn08KsIj/kePtMej4sz0l8MxZGdB3a9ccy9jc3D/WCv7n5YrkKE1UF2HYe/5kPLg==", crossorigin="anonymous", referrerpolicy="no-referrer")
+    link(href="https://unpkg.com/leaflet/dist/leaflet.css", rel="stylesheet")
+    script(src="https://unpkg.com/leaflet/dist/leaflet.js")
+    script(src="https://code.jquery.com/jquery-3.6.0.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js")
+    style.
+      @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
+      body {
+        font-family: 'Open Sans', sans-serif;
+      }
+      .navbar {
+        background-color: #EDE8E3;
+      }
+      .footer {
+        background-color: #E3E9ED;
+      }
+      #map {
+        height: 80vh;
+      }
+      .autocomplete-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 5px;
+        background-color: white;
+        max-height: 150px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+      }
+      .autocomplete-item {
+        padding: 8px;
+        cursor: pointer;
+      }
+      .autocomplete-item:hover {
+        background-color: #f0f0f0;
+      }
+
+  body
+  header
+    nav.navbar.navbar-expand-lg.navbar-light
+      .container
+        a.navbar-brand(href="/")
+          img(src="https://cdn-icons-png.flaticon.com/128/2358/2358505.png" alt="logo" width="80")
+        button.navbar-toggler(type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation")
+          span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto
+            li.nav-item
+              a.nav-link(href="/") Начало
+            li.nav-item
+              a.nav-link(href="/map") Локации
+            li.nav-item
+              a.nav-link(href="/adverts") Намери приятел
+              if user
+                li.nav-item.dropdown
+                  a.nav-link.dropdown-toggle(href='#', role='button', data-bs-toggle='dropdown', aria-expanded='false')
+                    | Влезли сте като #{user.name}
+                  ul.dropdown-menu.dropdown-menu-end
+                      li
+                      a.dropdown-item(href='/editProfile') Редактиране на профил
+                      li
+                      a.dropdown-item(href='/logout') Изход
+              else
+                li.nav-item
+                  a.nav-link(href='/login') Вход
+                li.nav-item
+                  a.nav-link(href='/register') Регистрация
+    main.d-flex
+      .container
+        .row
+          h2.text-center.my-5 Нашите любими места
+        .row
+          .col-md-8
+            #map
+          .col-md-4
+            .form-container
+              h4 Предложения:
+              p.text-secondary Препоръчайте ни място, от което сте доволни и ние ще го добавим.
+              form
+                .mb-3
+                  label(for="name", class="form-label") Име:
+                  input(type="text", class="form-control", id="name", aria-describedby="nameHelp")
+                .mb-3
+                  label(for="email", class="form-label") Имейл адрес:
+                  input(type="email", class="form-control", id="email", aria-describedby="emailHelp")
+                .mb-3
+                  label(for="text", class="form-label") Град:
+                  input(type="text", class="form-control", id="text", aria-describedby="textHelp")
+                  ul.autocomplete-list#completeList
+                .mb-3
+                  label(for="area", class="form-label") Предложение:
+                  textarea(name="area", id="area", cols="30", rows="4", class="form-control", placeholder="Точен адрес, вашият отзив, защо го препоръчвате")
+                button(type="submit", class="btn btn-primary") Изпрати
+    
+    script.
+      var map = L.map('map').setView([51.505, -0.09], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+      var marker = L.marker([51.505, -0.09]).addTo(map);
+      marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+
+    footer.footer.d-sm-flex.text-center.justify-content-between.align-items-center.py-3.my-0.border-top.mt-5
+      .container-fluid.px-3.mx-3
+        .row.d-flex.text-center.justify-content-between
+          .col-md-4.mb-3.mb-md-0
+            p.mb-0.text-body-secondary Всички права запазени!
+            p.mb-0.text-body-secondary Сайтът е създаден с учебна цел!
+          .col-12.col-md-2.mb-md-0
+            a(href="https://www.facebook.com/", class="col link-body-emphasis text-decoration-none mx-2")
+              i.bi.bi-facebook
+            a(href="https://www.instagram.com/", class="col link-body-emphasis text-decoration-none mx-2")
+              i.bi.bi-instagram
+            a(href="https://twitter.com/?lang=bg", class="col link-body-emphasis text-decoration-none mx-2")
+              i.bi.bi-twitter-x
+          ul.nav.col-md-4.justify-content-center.mb-3.mb-md-0
+            li.nav-item
+              a.nav-link.px-2.link-secondary(href="/") Начало
+            li.nav-item
+              a.nav-link.px-2.link-secondary(href="/adverts") Намери приятел
+            li.nav-item
+              a.nav-link.px-2.link-secondary(href="/map") Локации

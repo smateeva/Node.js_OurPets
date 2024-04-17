@@ -1,0 +1,102 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="description" content="Правилното място за собствениците на домашни любимци. Обсъждане на теми, споделяне на опит и интересни факти.")
+    meta(name="keywords" content="домашни любимци, куче, котка, хранене, опит, интересни факти, форум, карта")
+    meta(name="author" content="Симона Матеева")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    title Добавяне на обява
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.2/js/bootstrap.bundle.min.js")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css")
+    script(src="https://code.jquery.com/jquery-3.6.0.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js")
+    style.
+      @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
+      body {
+        font-family: 'Open Sans', sans-serif;
+      }
+      /* main {
+        background-image: url('https://outline-prod.imgix.net/20180129-6WCSE0otV0U22I6gT0gm?s=20c3e240cf86c5845bc3a35921be6518?auto=format&q=60&w=1280&s=361958fee2ac276fcbde8497beea57ad&duotone=000000,FFFFFF');
+        height: 100vh;
+        background-repeat: no-repeat;
+      } */
+      .navbar {
+        background-color: #EDE8E3;
+      }
+      .footer {
+        background-color: #E3E9ED;
+      }
+  header
+    nav.navbar.navbar-expand-lg.navbar-light
+      .container
+        a.navbar-brand(href="/")
+          img(src="https://cdn-icons-png.flaticon.com/128/2358/2358505.png" alt="logo" width="80")
+        button.navbar-toggler(type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation")
+          span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto
+            li.nav-item
+              a.nav-link(href="/") Начало
+            li.nav-item
+              a.nav-link(href="/map") Локации
+            li.nav-item
+              a.nav-link(href="/adverts") Намери приятел
+              if user
+                li.nav-item.dropdown
+                  a.nav-link.dropdown-toggle(href='#', role='button', data-bs-toggle='dropdown', aria-expanded='false')
+                    | Влезли сте като #{user.name}
+                  ul.dropdown-menu.dropdown-menu-end
+                      li
+                      a.dropdown-item(href='/editProfile') Редактиране на профил
+                      li
+                      a.dropdown-item(href='/logout') Изход
+              else
+                li.nav-item
+                  a.nav-link(href='/login') Вход
+                li.nav-item
+                  a.nav-link(href='/register') Регистрация
+    main.d-flex.justify-content-center.align-items-center.text-center.mx-3(style="height: 50rem;")
+      .card.mt-3.my-3.shadow
+        .card-body.mt-3
+          .row.pt-3.mx-0
+            form.mx-auto.col-lg-12(action=`/adverts`, method="post")
+              h1.text-center.py-3 Добавяне на обява
+              .my-1.text-start
+               label(for="title") Заглавие:
+               input#title.form-control(type="text", name="title", required=true)
+              .my-2.text-start
+                label(for="description") Описание:
+                textarea#description.form-control(name="description", required=true)
+              .my-2.text-start
+                label(for="image") Изображение (URL):
+                input#imageUrl.form-control(type="text" name="image" required=true)
+              .my-2.text-start
+                label(for="created") Създанена на:
+                input#created.form-control(type="date" name="created" required=true)
+              .d-flex.justify-content-between.align-items-center
+                button.btn.btn-primary(type="submit") Добави
+                a.btn.btn-danger(href="/adverts") Откажи
+    footer.footer.d-sm-flex.text-center.justify-content-between.align-items-center.py-3.my-0.border-top
+      .container-fluid.px-3.mx-3
+        .row.d-flex.text-center.justify-content-between
+          .col-md-4.mb-3.mb-md-0
+            p.mb-0.text-body-secondary Всички права запазени!
+            p.mb-0.text-body-secondary Сайтът е създаден с учебна цел!
+          .col-12.col-md-2.align-items-center.justify-content-center.mx-auto.mb-3.mb-md-0
+            a(href="https://www.facebook.com/", class="col link-body-emphasis text-decoration-none mx-2")
+              i.bi.bi-facebook
+            a(href="https://www.instagram.com/", class="col link-body-emphasis text-decoration-none mx-2")
+              i.bi.bi-instagram
+            a(href="https://twitter.com/?lang=bg", class="col link-body-emphasis text-decoration-none mx-2")
+              i.bi.bi-twitter-x
+          ul.nav.col-md-4.justify-content-center.mb-3.mb-md-0
+            li.nav-item
+              a.nav-link.px-2.link-secondary(href="/") Начало
+            li.nav-item
+              a.nav-link.px-2.link-secondary(href="/adverts") Намери приятел
+            li.nav-item
+              a.nav-link.px-2.link-secondary(href="/map") Локации

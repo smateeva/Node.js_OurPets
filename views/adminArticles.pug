@@ -1,0 +1,69 @@
+doctype html
+html(lang="bg")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        title Административен панел 
+        // Using Bootstrap 5 for consistency with other parts
+        link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css")
+        script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js")
+        style.
+            body {
+                font-family: 'Open Sans', sans-serif;
+            }
+            .navbar {
+                background-color: #EDE8E3;
+            }
+            .footer {
+                background-color: #E3E9ED;
+            }
+            .container {
+                margin-top: 2rem;
+            }
+            img{
+                max-height: 20rem;
+                width: 20rem;
+                display: block; /* Ensures no extra space at the bottom */
+            }
+    body
+        header
+            nav.navbar.navbar-expand-lg.navbar-light
+                .container
+                    a.navbar-brand(href='/') Административен панел
+                    button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNavAltMarkup' aria-controls='navbarNavAltMarkup' aria-expanded='false' aria-label='Toggle navigation')
+                        span.navbar-toggler-icon
+                    .collapse.navbar-collapse#navbarNavAltMarkup
+                        .navbar-nav.ms-auto
+                            li.nav-item
+                                a.nav-link(href='/admin/logout') Изход
+
+        main
+            .container
+               .container
+                h1 Статии
+                a.btn.btn-success.mb-3(href='/admin') Добави статия
+                if articles.length > 0
+                    .row
+                        each article in articles
+                            .col-md-6
+                                .card.mb-3
+                                    img.card-img-top(src=article.picture alt=article.title)
+                                    .card-body
+                                        h5.card-title= article.title
+                                        p.card-text= article.content
+                                        .d-flex.justify-content-between.align-items-center
+                                            a.btn.btn-outline-primary(href=`/admin/article/edit/${article.id}`) Редактиране
+                                            a.btn.btn-outline-danger(confirm-delete onclick=`confirmDelete('/admin/article/delete/${article.id}')`) Изтриване
+                else
+                    .alert.alert-warning Няма статии.
+
+        script.
+            function confirmDelete(url) {
+                if (confirm('Сигурни ли сте че искате да изтриите тази статия?')) {
+                    fetch(url, { method: 'POST' }).then(res => location.reload());
+                }
+            }
+
+        footer
+            .container.text-center.py-4
+                span.text-muted © 2024 OurPets. Сайтът е създаден с учебна цел!

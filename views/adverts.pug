@@ -1,0 +1,107 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="description" content="Правилното място за собствениците на домашни любимци. Обсъждане на теми, споделяне на опит и интересни факти.")
+        meta(name="keywords" content="домашни любимци, куче, котка, хранене, опит, интересни факти, форум, карта")
+        meta(name="author" content="Симона Матеева")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        title Начало
+        link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet")
+        script(src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.2/js/bootstrap.bundle.min.js")
+        link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css")
+        link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css")
+        script(src="https://code.jquery.com/jquery-3.6.0.slim.min.js")
+        script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js")
+        script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js")
+        style.
+            @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
+            body {
+                font-family: 'Open Sans', sans-serif;
+            }
+            .navbar {
+                background-color: #EDE8E3;
+            }
+            .footer {
+                background-color: #E3E9ED;
+            }
+            #img{
+                max-height: 20rem;
+                   
+            }
+    header
+        nav.navbar.navbar-expand-lg.navbar-light
+            .container
+                a.navbar-brand(href="/")
+                    img(src="https://cdn-icons-png.flaticon.com/128/2358/2358505.png" alt="logo" width="80")
+                button.navbar-toggler(type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation")
+                    span.navbar-toggler-icon
+                #navbarNav.collapse.navbar-collapse
+                    ul.navbar-nav.ms-auto
+                        li.nav-item
+                            a.nav-link(href="/") Начало
+                        li.nav-item
+                            a.nav-link(href="/map") Локации
+                        li.nav-item
+                            a.nav-link(href="/adverts") Намери приятел
+                            if user
+                                li.nav-item.dropdown
+                                    a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
+                                        | Влезли сте като #{user.name}
+                                    ul.dropdown-menu.dropdown-menu-end
+                                        li
+                                        a.dropdown-item(href='/editProfile') Редактиране на профил
+                                        li
+                                        a.dropdown-item(href='/logout') Изход
+                            else
+                                li.nav-item
+                                    a.nav-link(href='/login') Вход
+                                li.nav-item
+                                    a.nav-link(href='/register') Регистрация
+        main
+               .container
+                h1.text-center.py-5 Намери си приятел <i class="bi bi-search-heart"></i>
+                a.btn.btn-success.mb-3(href='/adverts/newAdvert') Добави обява
+                if adverts && adverts.length > 0
+                    .row
+                        each advert in adverts
+                            .col-md-6
+                                .card.mb-3
+                                    img#img.card-img-top(src=advert.image alt=advert.title)
+                                    .card-body
+                                        h5.card-title= advert.title
+                                        p.card-text= advert.description
+                                        p.card-text= advert.created
+                                        .d-flex.justify-content-between.align-items-center
+                                            a.btn.btn-outline-primary(href=`/adverts/edit/${advert.id}`) Редактирай
+                                            a.btn.btn-outline-danger(confirm-delete onclick=`confirmDelete('/adverts/delete/${advert.id}')`) Изтриване
+                else
+                    .alert.alert-warning Няма намерени обяви за домашни любимци.
+
+        script.
+            function confirmDelete(url) {
+                if (confirm('Сигурни ли сте че искате да изтриете обявата?')) {
+                    fetch(url, { method: 'POST' }).then(res => location.reload());
+                }
+            }
+
+    footer.footer.d-sm-flex.text-center.justify-content-between.align-items-center.py-3.my-0.border-top
+        .container-fluid.px-3.mx-3
+            .row.d-flex.text-center.justify-content-between
+                .col-md-4.mb-3.mb-md-0
+                        p.mb-0.text-body-secondary Всички права запазени!
+                        p.mb-0.text-body-secondary Сайтът е създаден с учебна цел!
+                .col-12.col-md-2.align-items-center.justify-content-center.mx-auto.mb-3.mb-md-0
+                    a(href="https://www.facebook.com/" class="col link-body-emphasis text-decoration-none mx-2")
+                        i.bi.bi-facebook
+                    a(href="https://www.instagram.com/" class="col link-body-emphasis text-decoration-none mx-2")
+                        i.bi.bi-instagram
+                    a(href="https://twitter.com/?lang=bg" class="col link-body-emphasis text-decoration-none mx-2")
+                        i.bi.bi-twitter-x
+                ul.nav.col-md-4.justify-content-center.mb-3.mb-md-0
+                    li.nav-item
+                        a.nav-link.px-2.link-secondary(href="/") Начало
+                    li.nav-item
+                        a.nav-link.px-2.link-secondary(href="/adverts") Намери приятел
+                    li.nav-item
+                        a.nav-link.px-2.link-secondary(href="/map") Локации
