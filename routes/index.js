@@ -1,4 +1,4 @@
-const { db } = require('../app');
+const { db } = require('../index');
 const express = require('express');
 const router = express.Router();
 
